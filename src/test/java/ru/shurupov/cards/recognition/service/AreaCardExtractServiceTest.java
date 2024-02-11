@@ -2,7 +2,7 @@ package ru.shurupov.cards.recognition.service;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static ru.shurupov.cards.recognition.service.TestUtils.bufferedImagesEqual;
-import static ru.shurupov.cards.recognition.service.TestUtils.readImage;
+import static ru.shurupov.cards.recognition.utils.ResourceUtils.readImage;
 
 import java.awt.image.BufferedImage;
 import java.util.List;

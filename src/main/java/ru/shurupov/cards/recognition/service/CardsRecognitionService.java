@@ -10,17 +10,25 @@ public class CardsRecognitionService {
 
   private final AreaCardExtractService areaCardExtractService;
   private final CardPartExtractService cardPartExtractService;
+  private final ImageRecognitionService recognitionService;
 
   public String recognize(BufferedImage image) {
 
     List<BufferedImage> cards = areaCardExtractService.extractCards(image);
 
+    StringBuilder sb = new StringBuilder();
+
     for (BufferedImage card : cards) {
-      BufferedImage cardValue = cardPartExtractService.extractValue(card);
-      BufferedImage cardSuit = cardPartExtractService.extractSuit(card);
+      BufferedImage cardValueImage = cardPartExtractService.extractValue(card);
+      String value = recognitionService.findValueName(cardValueImage);
+      sb.append(value);
+
+      BufferedImage cardSuitImage = cardPartExtractService.extractSuit(card);
+      String suit = recognitionService.findValueName(cardSuitImage);
+      sb.append(suit);
     }
 
-    return "QcJd5h";
+    return sb.toString();
   }
 
 
