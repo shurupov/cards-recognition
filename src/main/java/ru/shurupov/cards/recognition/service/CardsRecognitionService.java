@@ -24,7 +24,7 @@ public class CardsRecognitionService {
       sb.append(value);
 
       BufferedImage cardSuitImage = cardPartExtractService.extractSuit(card);
-      String suit = recognitionService.findValueName(cardSuitImage);
+      String suit = recognitionService.findSuitName(cardSuitImage);
       sb.append(suit);
     }
 

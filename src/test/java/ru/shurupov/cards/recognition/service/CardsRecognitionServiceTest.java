@@ -1,11 +1,16 @@
 package ru.shurupov.cards.recognition.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static ru.shurupov.cards.recognition.utils.ResourceUtils.getResourceFiles;
 import static ru.shurupov.cards.recognition.utils.ResourceUtils.readImage;
 
 import java.awt.image.BufferedImage;
+import java.util.List;
+import java.util.stream.Stream;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import ru.shurupov.cards.recognition.config.CardPartExtractConfig;
 import ru.shurupov.cards.recognition.config.CardsAreaConfig;
@@ -31,7 +36,7 @@ class CardsRecognitionServiceTest {
   }
 
   @ParameterizedTest
-  @ValueSource(strings = {"2c7h3c10c", "5cQs6h", "4c9dJs", "6dKdAs", "8d2h7s", "9c5c9d", "AcKc10d6s"})
+  @MethodSource("getSituations")
   void recognize(String situation) {
 
     BufferedImage image = readImage("areas/" + situation + ".png");
@@ -39,5 +44,14 @@ class CardsRecognitionServiceTest {
     String recognized = recognitionService.recognize(image);
 
     assertThat(recognized).isEqualTo(situation);
+  }
+
+  private static Stream<Arguments> getSituations() {
+    List<String> sampleFiles = getResourceFiles("areas");
+    List<String> names = sampleFiles.stream()
+        .map(n -> n.substring(0, n.length() - 4)).toList();
+
+    return names.stream()
+        .map(Arguments::of);
   }
 }

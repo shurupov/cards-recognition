@@ -4,5 +4,5 @@ import lombok.Value;
 
 @Value
 public class ComparatorConfig {
-  double equivalence = 0.99;
+  double equivalence = 0.8;
 }
