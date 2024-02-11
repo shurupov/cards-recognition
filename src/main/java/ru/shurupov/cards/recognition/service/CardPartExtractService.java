@@ -1,24 +1,21 @@
-package ru.shurupov.cards.recognition;
+package ru.shurupov.cards.recognition.service;
 
 import java.awt.image.BufferedImage;
+import lombok.RequiredArgsConstructor;
+import ru.shurupov.cards.recognition.config.CardPartExtractConfig;
 
+@RequiredArgsConstructor
 public class CardPartExtractService {
 
-  private static final int SKIP_TRIANGLE_SIZE = 5;
-
-  private static final int VALUE_START_LINE = 0;
-  private static final int VALUE_START_COLUMN = 0;
-  private static final int VALUE_END_LINE = 28;
-  private static final int VALUE_END_COLUMN = 32;
-  private static final int SUIT_START_LINE = 43;
-  private static final int SUIT_START_COLUMN = 22;
+  private final CardPartExtractConfig config;
 
   public BufferedImage extractValue(BufferedImage card) {
-    return extractImagePart(card, VALUE_START_LINE, VALUE_START_COLUMN, VALUE_END_LINE, VALUE_END_COLUMN, false);
+    return extractImagePart(card, config.getValueStartLine(), config.getValueStartColumn(), config.getValueEndLine(),
+        config.getValueEndColumn(), false);
   }
 
   public BufferedImage extractSuit(BufferedImage card) {
-    return extractImagePart(card, SUIT_START_LINE, SUIT_START_COLUMN ,true);
+    return extractImagePart(card, config.getSuitStartLine(), config.getSuitStartColumn() ,true);
   }
 
   public BufferedImage extractImagePart(BufferedImage card, int startY, int startX, boolean checkTriangle) {
@@ -70,6 +67,6 @@ public class CardPartExtractService {
 
   private boolean matchedToLeftTopTriangle(int x, int y, int startX, int startY) {
     int value = (x + y) - (startX + startY);
-    return value < SKIP_TRIANGLE_SIZE;
+    return value < config.getSkipTriangleSize();
   }
 }
