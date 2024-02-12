@@ -36,6 +36,7 @@ public class ImageRecognitionService {
 
     for (int i = 0; i < sampleFiles.size(); i++) {
       BufferedImage image = readImage(folderName + "/" + sampleFiles.get(i));
+//      System.out.println(folderName + " " + i + " " + image);
       boolean[][] snapshot = imageConverter.toOutlineSnapshot(image);
       samples.put(names.get(i), snapshot);
     }

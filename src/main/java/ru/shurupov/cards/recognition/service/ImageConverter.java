@@ -27,10 +27,12 @@ public class ImageConverter {
     return result;
   }
 
+  // Этот метод нужен для дебага
   public BufferedImage outlined(BufferedImage image) {
     return backToImage(toOutlineSnapshot(image));
   }
 
+  // Этот метод нужен для дебага
   public BufferedImage backToImage(boolean[][] converted) {
     BufferedImage image = new BufferedImage(converted[0].length, converted.length, TYPE_4BYTE_ABGR);
     int height = image.getHeight();
