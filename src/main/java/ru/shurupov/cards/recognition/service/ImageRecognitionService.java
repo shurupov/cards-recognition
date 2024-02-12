@@ -36,7 +36,7 @@ public class ImageRecognitionService {
 
     for (int i = 0; i < sampleFiles.size(); i++) {
       BufferedImage image = readImage(folderName + "/" + sampleFiles.get(i));
-      boolean[][] snapshot = imageConverter.convert(image);
+      boolean[][] snapshot = imageConverter.toOutlineSnapshot(image);
       samples.put(names.get(i), snapshot);
     }
     return Map.copyOf(samples);
@@ -63,7 +63,7 @@ public class ImageRecognitionService {
 
   private String findName(BufferedImage image, Map<String, boolean[][]> snapshots, double acceptableEquivalence) {
     for (Map.Entry<String, boolean[][]> snapshot : snapshots.entrySet()) {
-      double equivalence = comparatorService.compare(snapshot.getValue(), imageConverter.convert(image));
+      double equivalence = comparatorService.compare(snapshot.getValue(), imageConverter.toOutlineSnapshot(image));
       if (equivalence > acceptableEquivalence) {
         return snapshot.getKey();
       }

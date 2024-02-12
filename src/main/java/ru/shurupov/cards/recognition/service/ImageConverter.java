@@ -12,27 +12,7 @@ public class ImageConverter {
 
   private final ConverterConfig config;
 
-  public boolean[][] convert(BufferedImage image) {
-    return convertToOutline(image);
-  }
-
-  public boolean[][] convertToDifferenceFromBg(BufferedImage image) {
-    int background = image.getRGB(0, 0);
-    int height = image.getHeight();
-    int width = image.getWidth();
-
-    boolean[][] result = new boolean[height][width];
-
-    for (int y = 0; y < height; y++) {
-      for (int x = 0; x < width; x++) {
-        result[y][x] = background != image.getRGB(x, y);
-      }
-    }
-
-    return result;
-  }
-
-  public boolean[][] convertToOutline(BufferedImage image) {
+  public boolean[][] toOutlineSnapshot(BufferedImage image) {
     int height = image.getHeight();
     int width = image.getWidth();
 
@@ -48,7 +28,7 @@ public class ImageConverter {
   }
 
   public BufferedImage outlined(BufferedImage image) {
-    return backToImage(convert(image));
+    return backToImage(toOutlineSnapshot(image));
   }
 
   public BufferedImage backToImage(boolean[][] converted) {
