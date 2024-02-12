@@ -7,7 +7,6 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class CardsRecognitionService {
 
-
   private final AreaCardExtractService areaCardExtractService;
   private final CardPartExtractService cardPartExtractService;
   private final ImageRecognitionService recognitionService;
@@ -30,7 +29,4 @@ public class CardsRecognitionService {
 
     return sb.toString();
   }
-
-
-
 }
