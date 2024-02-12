@@ -36,7 +36,6 @@ public class Main {
 
     String path = args[0];
     BufferedImage image = ImageIO.read(new File(path));
-    System.out.println("image " + image);
     String situation = recognitionService.recognize(image);
     System.out.println(path + " " + situation);
   }
