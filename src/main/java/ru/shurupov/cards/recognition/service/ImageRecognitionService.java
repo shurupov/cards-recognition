@@ -23,22 +23,17 @@ public class ImageRecognitionService {
     this.config = config;
     this.imageConverter = imageConverter;
     this.comparatorService = comparatorService;
-    suitSamples = initSamples("suits");
-    valueSamples = initSamples("values");
+    suitSamples = initSamples("suits", "c", "d", "h" , "s");
+    valueSamples = initSamples("values", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A");
   }
 
-  private Map<String, boolean[][]> initSamples(String folderName) {
-    List<String> sampleFiles = getResourceFiles(folderName);
-    List<String> names = sampleFiles.stream()
-        .map(n -> n.substring(0, n.length() - 4)).toList();
-
+  private Map<String, boolean[][]> initSamples(String folderName, String ...names) {
     Map<String, boolean[][]> samples = new HashMap<>();
 
-    for (int i = 0; i < sampleFiles.size(); i++) {
-      BufferedImage image = readImage(folderName + "/" + sampleFiles.get(i));
-//      System.out.println(folderName + " " + i + " " + image);
+    for (String name : names) {
+      BufferedImage image = readImage(folderName + "/" + name + ".png");
       boolean[][] snapshot = imageConverter.toOutlineSnapshot(image);
-      samples.put(names.get(i), snapshot);
+      samples.put(name, snapshot);
     }
     return Map.copyOf(samples);
   }

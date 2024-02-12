@@ -12,7 +12,7 @@ public class ResourceUtils {
 
   public static BufferedImage readImage(String path) {
     try {
-      InputStream imageStream = ClassLoader.getSystemClassLoader().getResourceAsStream(path);
+      InputStream imageStream = getResourceAsStream(path);
       return ImageIO.read(imageStream);
     } catch (Throwable e) {
       return null;
