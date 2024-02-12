@@ -55,7 +55,7 @@ public class ImageRecognitionService {
     String result;
     do {
       result = findName(image, snapshots, acceptableEquivalence);
-      acceptableEquivalence -= 0.1;
+      acceptableEquivalence -= config.getEquivalenceStep();
     } while (acceptableEquivalence > 0 && result == null);
 
     return result;
