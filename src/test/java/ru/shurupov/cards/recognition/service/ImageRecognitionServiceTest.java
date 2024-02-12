@@ -9,6 +9,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import ru.shurupov.cards.recognition.config.ComparatorConfig;
+import ru.shurupov.cards.recognition.config.ConverterConfig;
 
 class ImageRecognitionServiceTest {
 
@@ -17,8 +18,9 @@ class ImageRecognitionServiceTest {
   @BeforeEach
   public void init() {
     ComparatorConfig config = new ComparatorConfig();
-    ImageConverter imageConverter = new ImageConverter();
-    recognitionService = new ImageRecognitionService(config, imageConverter);
+    ImageConverter imageConverter = new ImageConverter(new ConverterConfig());
+    ImageComparatorService comparatorService = new ImageComparatorService();
+    recognitionService = new ImageRecognitionService(config, imageConverter, comparatorService);
   }
 
   @ParameterizedTest

@@ -16,10 +16,13 @@ public class ImageRecognitionService {
 
   private final ComparatorConfig config;
   private final ImageConverter imageConverter;
+  private final ImageComparatorService comparatorService;
 
-  public ImageRecognitionService(ComparatorConfig config, ImageConverter imageConverter) {
+  public ImageRecognitionService(ComparatorConfig config, ImageConverter imageConverter,
+      ImageComparatorService comparatorService) {
     this.config = config;
     this.imageConverter = imageConverter;
+    this.comparatorService = comparatorService;
     suitSamples = initSamples("suits");
     valueSamples = initSamples("values");
   }
@@ -39,25 +42,6 @@ public class ImageRecognitionService {
     return Map.copyOf(samples);
   }
 
-  private double compare(boolean[][] snapshot1, boolean[][] snapshot2) {
-    int height = Math.min(snapshot1.length, snapshot2.length);
-    int width = Math.min(snapshot1[0].length, snapshot2[0].length);
-
-    int all = 0;
-    int equal = 0;
-
-    for (int y = 0; y < height; y++) {
-      for (int x = 0; x < width; x++) {
-        all++;
-        if (snapshot1[y][x] == snapshot2[y][x]) {
-          equal++;
-        }
-      }
-    }
-
-    return (double) equal / all;
-  }
-
   public String findSuitName(BufferedImage suit) {
     return findName(suit, suitSamples);
   }
@@ -67,9 +51,20 @@ public class ImageRecognitionService {
   }
 
   public String findName(BufferedImage image, Map<String, boolean[][]> snapshots) {
+    double acceptableEquivalence = config.getEquivalence();
+    String result;
+    do {
+      result = findName(image, snapshots, acceptableEquivalence);
+      acceptableEquivalence -= 0.1;
+    } while (acceptableEquivalence > 0 && result == null);
+
+    return result;
+  }
+
+  private String findName(BufferedImage image, Map<String, boolean[][]> snapshots, double acceptableEquivalence) {
     for (Map.Entry<String, boolean[][]> snapshot : snapshots.entrySet()) {
-      double equivalence = compare(snapshot.getValue(), imageConverter.convert(image));
-      if (equivalence > config.getEquivalence()) {
+      double equivalence = comparatorService.compare(snapshot.getValue(), imageConverter.convert(image));
+      if (equivalence > acceptableEquivalence) {
         return snapshot.getKey();
       }
     }

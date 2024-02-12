@@ -11,10 +11,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.junit.jupiter.params.provider.ValueSource;
 import ru.shurupov.cards.recognition.config.CardPartExtractConfig;
 import ru.shurupov.cards.recognition.config.CardsAreaConfig;
 import ru.shurupov.cards.recognition.config.ComparatorConfig;
+import ru.shurupov.cards.recognition.config.ConverterConfig;
 
 class CardsRecognitionServiceTest {
 
@@ -27,10 +27,11 @@ class CardsRecognitionServiceTest {
     CardPartExtractService partExtractService = new CardPartExtractService(cardPartExtractConfig);
     CardsAreaConfig cardsAreaConfig = new CardsAreaConfig();
     AreaCardExtractService areaCardExtractService = new AreaCardExtractService(cardsAreaConfig);
-    ImageConverter imageConverter = new ImageConverter();
+    ImageConverter imageConverter = new ImageConverter(new ConverterConfig());
+    ImageComparatorService comparatorService = new ImageComparatorService();
     ComparatorConfig config = new ComparatorConfig();
     ImageRecognitionService recognitionService = new ImageRecognitionService(
-        config, imageConverter);
+        config, imageConverter, comparatorService);
     this.recognitionService = new CardsRecognitionService(areaCardExtractService, partExtractService,
         recognitionService);
   }

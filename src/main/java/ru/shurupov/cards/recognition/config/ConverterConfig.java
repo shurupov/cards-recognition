@@ -3,6 +3,6 @@ package ru.shurupov.cards.recognition.config;
 import lombok.Value;
 
 @Value
-public class ComparatorConfig {
-  double equivalence = 0.9;
+public class ConverterConfig {
+  int minColorComponentDifference = 5;
 }
