@@ -1,12 +1,9 @@
 package ru.shurupov.cards.recognition;
 
-import static ru.shurupov.cards.recognition.utils.ResourceUtils.readImage;
-
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
+import java.util.Objects;
 import javax.imageio.ImageIO;
 import ru.shurupov.cards.recognition.config.CardPartExtractConfig;
 import ru.shurupov.cards.recognition.config.CardsAreaConfig;
@@ -34,9 +31,11 @@ public class Main {
     CardsRecognitionService recognitionService = new CardsRecognitionService(areaCardExtractService, partExtractService,
         imageRecognitionService);
 
-    String path = args[0];
-    BufferedImage image = ImageIO.read(new File(path));
-    String situation = recognitionService.recognize(image);
-    System.out.println(path + " " + situation);
+
+    for (File file : Objects.requireNonNull(new File(args[0]).listFiles())) {
+      BufferedImage image = ImageIO.read(file);
+      String situation = recognitionService.recognize(image);
+      System.out.println(file.getName() + " " + situation + " " + ( file.getName().equals(situation+".png") ? "\033[92mOK" : "\033[91mFAIL" ) + "\033[0m");
+    }
   }
 }
